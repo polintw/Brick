@@ -2,133 +2,11 @@
 <html lang="zh-TW">
 <head>
     <meta charset="utf-8" />
-<style>
-#div1, #div2
-{display: inline-block; width:100px; height:35px; margin:10px;padding:10px;border:1px solid #aaaaaa;}
-
-.dragover {
-  background-color: #99ff99;
-}
-
-.not_dragover  {
-  background-color: initial;
-}
-
-
-table {
-    border: 1px dotted #000;
-    width: 100%;
-}
-
-td {
-    border: 3px ridge;
-    width: 15%;
-    height: 100px;
-}
-
-.brick {
-    background-color: #990000;
-    width: 95%;
-    height: 95px;
-    margin: 0 auto;
-    box-sizing: border-box;
-    padding: 10px;
-    overflow: hidden;
-}
-
-td * {
-    font-size: 0.5em;
-    border: 1px dotted #000;
-    margin: 5px;
-}
-
-.small .ref{
-    display: none;
-}
-
-#paste {
-    padding: 1%;
-    border: 3px ridge;
-    /*width: 300px;*/
-}
-
-#paste label{
-    display: inline-block;
-    width: 20%;
-    min-width: 100px;
-}
-
-</style>
-<script>
-function allowDrop(ev) {
-    ev.preventDefault();
-    if (ev.target.tagName === "TD"){
-        ev.target.classList.add("dragover");
-        ev.target.classList.remove("not_dragover");
-    }
-}
-
-function dragleave_handler(ev) {
-    ev.preventDefault();
-    if (ev.target.tagName === "TD"){
-        ev.target.classList.remove("dragover");
-        ev.target.classList.add("not_dragover");
-    }
-
-}
-
-function drag(ev) {
-    ev.dataTransfer.setData("a_brick", ev.target.id);
-}
-
-function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("a_brick");
-    if (ev.target.tagName === "TD" && ev.target.getElementsByClassName('brick')[0] === undefined){
-        ev.target.appendChild(document.getElementById(data));
-        ev.target.classList.remove("dragover");
-    }
-}
-
-function dragend(ev) {
-    var tds = document.getElementsByTagName('td');
-    for(let i = 0; i < tds.length; i++){
-        if (tds[i].classList.contains("dragover")){
-            tds[i].classList.remove("dragover");
-        }
-    }
-}
-
-function initialize(){
-    document.addEventListener('drop', drop);
-    document.addEventListener('dragover', allowDrop);
-    document.addEventListener('dragleave', dragleave_handler);
-    document.addEventListener('dragend', drop);
-}
-
-function add_brick (){
-    var text = document.getElementById('main_text').value
-    text = text.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;');
-    var ref = document.getElementById('ref').value
-    if (text.length < 1){return 0;}
-    var tds = document.getElementsByTagName('td');
-    for(let i = tds.length - 1; i >= 0; i--){
-        if (tds[i].getElementsByClassName('brick')[0]){
-            continue;
-        }else{
-            tds[i].innerHTML += ('<div id="' + document.getElementsByClassName('brick').length + '" class="brick" draggable="true" ondragstart="drag(event);" ondragend="dragend(event);" >'
-            + '<p>' + text + '</p>'
-            + '<p>' + ref + '</p>'
-            + '</div>')
-            break;
-        }
-    }
-    document.getElementById('main_text').value = null;
-    document.getElementById('ref').value = null;
-}
-
-window.onload = initialize;
-</script>
+    <link rel="stylesheet" href="./brick_wall.css" />
+    <script type="text/javascript" src="./brick_wall.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js" type="text/javascript"></script>
+    <script src="jquery.gridly.js" type="text/javascript"></script>
+    <link href="jquery.gridly.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
@@ -139,28 +17,19 @@ window.onload = initialize;
     請忽視這裡
     <hr>
 
-    <table>
-        <tr>
-            <td colspan="2"></td><td colspan="2"></td><td colspan="2"></td>
-        </tr>
-        <tr class="small">
-            <td></td><td></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-            <td colspan="2"></td><td colspan="2"></td><td colspan="2"></td>
-        </tr>
-        <tr class="small">
-            <td></td><td></td><td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div id="0" class="brick" draggable="true" ondragstart="drag(event);" ondragend="dragend(event);" >
-                    <p>重點</p>
-                    <p class="ref">ref.</p>
-                </div>
-                </td><td colspan="2"></td><td colspan="2"></td>
-        </tr>
-    </table>
+    <section>
+        <div class="row"></div>
+        <div class="row"></div>
+        <div class="row"></div>
+        <div class="row"></div>
+        <div class="row">
+          <div class="brick" draggable="true" ondragstart="drag(event);" ondragend="dragend(event);" >
+              <p>重點</p>
+              <p class="ref">ref.</p>
+          </div>
+          <div class="placeholder" ></div>
+        </div>
+    </section>
     <div id="paste">
         <label for="main_text">重點：</label>
         <textarea type="text" id="main_text" name="main_text"></textarea>

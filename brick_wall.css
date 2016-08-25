@@ -1,0 +1,59 @@
+#div1, #div2
+{display: inline-block; width:100px; height:35px; margin:10px;padding:10px;border:1px solid #aaaaaa;}
+
+.dragover {
+  background-color: #99ff99;
+}
+
+.not_dragover  {
+  background-color: initial;
+}
+
+
+section {
+    border: 1px dotted #000;
+    width: 1080px;
+}
+
+.row {
+	height: 136px;
+}
+
+.brick {
+	display: inline-block;
+    background-color: #990000;
+    width: 33%;
+    height: 130px;
+    margin: 0;
+    box-sizing: border-box;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.brick * {
+    font-size: 0.5em;
+    border: 1px dotted #000;
+    margin: 5px;
+}
+
+.placeholder {
+	border: 1px dotted #000;
+	display: inline-block;
+	width: 10px;
+	height: 130px;
+	background-color: #fff;
+	margin: 0;
+	padding: 0;
+}
+
+#paste {
+    padding: 1%;
+    border: 3px ridge;
+    /*width: 300px;*/
+}
+
+#paste label{
+    display: inline-block;
+    width: 20%;
+    min-width: 100px;
+}
