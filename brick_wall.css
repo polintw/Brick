@@ -1,15 +1,6 @@
 #div1, #div2
 {display: inline-block; width:100px; height:35px; margin:10px;padding:10px;border:1px solid #aaaaaa;}
 
-.dragover {
-  background-color: #99ff99;
-}
-
-.not_dragover  {
-  background-color: initial;
-}
-
-
 section {
     border: 1px dotted #000;
     width: 1080px;
@@ -47,7 +38,7 @@ section {
 .placeholder {
 	border: 1px dotted #000;
 	display: inline-block;
-	width: 10px;
+	width: 30px;
 	height: 136px;
 	background-color: gray;
 	margin: 0;
@@ -64,4 +55,12 @@ section {
     display: inline-block;
     width: 20%;
     min-width: 100px;
+}
+
+.dragover {
+  background-color: #99ff99;
+}
+
+.not_dragover  {
+  background-color: initial;
 }
