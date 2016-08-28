@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html lang="zh-TW">
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="./brick_wall.css" />
+    <script type="text/javascript" src="./brick_wall.js"></script>
+<!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js" type="text/javascript"></script>
+    <script src="jquery.gridly.js" type="text/javascript"></script>
+    <link href="jquery.gridly.css" rel="stylesheet" type="text/css" />
+ --></head>
+<body>
+
+
+    <section>
+        <div class="row">
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+        </div>
+        <div class="row">
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+        </div>
+        <div class="row">
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+        </div>
+        <div class="row">
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+        </div>
+        <div class="row">
+          <div class="placeholder" ></div>
+          
+          <div class="cell" >
+            <div id="0" class="brick" draggable="true" ondragstart="drag(event);" ondragend="dragend(event);" >
+                <p>重點</p>
+                <p class="ref">ref.</p>
+            </div>
+          </div>
+          
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+          <div class="cell" ></div>
+          <div class="placeholder" ></div>
+        </div>
+    </section>
+    <div id="paste">
+        <label for="main_text">重點：</label>
+        <textarea type="text" id="main_text" name="main_text"></textarea>
+        <span>(你要允許換行嗎？)</span>
+        <br />
+        <label for="ref">資料來源：</label>
+        <input type="text" id="ref" name="ref" placeholder="URL或書名" />
+    </div>
+    <button onclick="add_brick();" >add a brick</button>
+</body>
+</html>
+
