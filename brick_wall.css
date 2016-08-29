@@ -3,12 +3,12 @@
 
 section {
     border: 1px dotted #000;
-    width: 1080px;
+    width: 1280px;
 }
 
 .row {
 	border: 3px solid blue;
-	height: 136px;
+	height: 145px;
 	width: 100%;
 	display: flex;
 }
@@ -22,9 +22,9 @@ section {
     width:100%;
     height: 100%;
     margin: 0;
+	padding: 0;
     box-sizing: border-box;
-    padding: 5px 15px;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .cls-1{
