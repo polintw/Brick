@@ -8,7 +8,7 @@ section {
 
 .row {
 	border: 3px solid blue;
-	height: 145px;
+	height: 136px;
 	width: 100%;
 	display: flex;
 }
