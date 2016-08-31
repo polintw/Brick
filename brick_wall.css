@@ -1,18 +1,20 @@
 section {
     border: 1px dotted #000;
     width: 1080px;
+
 }
 
 
 .row {
 	border: 3px solid blue;
 	box-sizing:border-box;
-	height: 136px;
+	height: 141px;
 	width: 100%;
 	display: flex;
 }
 
 .cell {
+	height: 100%;
 	flex-basis: 100%;
 	background-color: transparent;
 }
@@ -20,10 +22,7 @@ section {
 .brick {
     width:100%;
     height: 100%;
-    margin: 0;
-	padding: 0;
-    box-sizing: border-box;
-    /*overflow: hidden;*/
+	box-sizing: border-box;
 }
 
 .cls-1{
@@ -49,10 +48,9 @@ section {
 }
 
 .placeholder {
-	border: 1px dotted #000;
 	display: inline-block;
 	width: 30px;
-	height: 136px;
+	height: 135px;
 	background-color: gray;
 	margin: 0;
 	padding: 0;
