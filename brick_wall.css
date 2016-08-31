@@ -1,13 +1,12 @@
-#div1, #div2
-{display: inline-block; width:100px; height:35px; margin:10px;padding:10px;border:1px solid #aaaaaa;}
-
 section {
     border: 1px dotted #000;
     width: 1080px;
 }
 
+
 .row {
 	border: 3px solid blue;
+	box-sizing:border-box;
 	height: 136px;
 	width: 100%;
 	display: flex;
@@ -32,12 +31,15 @@ section {
 }
 
 .cls-2{
-	fill:none;stroke-miterlimit:10;
+	fill:none;
+	stroke-miterlimit:10;
 	stroke:#d3320d;
 }
 .cls-3{
-	fill:none;stroke-miterlimit:10;
-	stroke:#000;stroke-width:2px;
+	fill:none;
+	stroke-miterlimit:10;
+	stroke:#000;
+	stroke-width:2px;
 }
 
 .brick * {
