@@ -30,22 +30,30 @@ section {
 .brick {
 	width:100%;
     height: 100%;
+	margin:0;
+	padding:0;
 	background-image:url(brick_template.svg);
 	background-repeat:no-repeat;
+	position: relative;
 }
 
-.brick-p {
+.brick-content {
 	width: 88%;
 	height: 64%;
-	position:relative;
+	margin: 0;
+	position:absolute;
 	top: 7%;
 	left: 6%;
-	right: 6%;
-	bottom: 71%;
 }
 
-.brick-ref {
 
+.brick-ref {
+	width: 88%;
+	height: 10%;
+	margin: 0;
+	position:absolute;
+	top: 77%;
+	left: 6%;
 }
 
 .cls-1{
