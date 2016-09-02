@@ -1,5 +1,5 @@
 section {
-	width: 1080px;
+	width: 1180px;
     border: 1px dotted #000;
 }
 
@@ -54,6 +54,12 @@ section {
 	position:absolute;
 	top: 77%;
 	left: 6%;
+}
+
+.brickBlank{
+	width: 90%;
+	height: 90%;
+	background-color: #d3320d;
 }
 
 .cls-1{

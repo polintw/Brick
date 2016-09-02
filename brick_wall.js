@@ -41,7 +41,9 @@ function drop(ev) {
 	rearrange(row);
 	if (3 < source_row.getElementsByClassName("cell").length &&
 		source_cell.getElementsByClassName("brick")[0] == undefined){
-		source_row.removeChild(source_cell);
+		var blank = document.createElement("div");
+		source_cell.appendChild(blank);
+		blank.classList.add("brickBlank");
 	}
 	rearrange(source_row);
 	
@@ -76,20 +78,20 @@ function initialize(){
     document.addEventListener('dragleave', dragleave_handler);
     // document.addEventListener('dragend', dragend);
 }
-//以下是舊的
+
 function add_brick (){
     var text = document.getElementById('main_text').value
     text = text.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;');
     var ref = document.getElementById('ref').value
     if (text.length < 1){return 0;}
-    var tds = document.getElementsByTagName('td');
-    for(let i = tds.length - 1; i >= 0; i--){
-        if (tds[i].getElementsByClassName('brick')[0]){
+    var cells = document.getElementsByClassName('cell');
+    for(let i = cells.length - 1; i >= 0; i--){
+        if (cells[i].getElementsByClassName('brick')[0]){
             continue;
         }else{
-            tds[i].innerHTML += ('<div id="' + document.getElementsByClassName('brick').length + '" class="brick" draggable="true" ondragstart="drag(event);" ondragend="dragend(event);" >'
-            + '<p>' + text + '</p>'
-            + '<p>' + ref + '</p>'
+            cells[i].innerHTML += ('<div id="' + document.getElementsByClassName('brick').length + '" class="brick" draggable="true" ondragstart="drag(event);" ondragend="dragend(event);" >'
+            + '<p class="brick-content">' + text + '</p>'
+            + '<p class="brick-ref">' + ref + '</p>'
             + '</div>')
             break;
         }
