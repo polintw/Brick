@@ -27,14 +27,34 @@ section {
 	background-color: transparent;
 }
 
-.brick {
+.brickTopic {
+	width:100%;
+    height: 100%;
+	background-image:url(brickTopic_template.svg);
+	background-repeat:no-repeat;
+	position: relative;
+}
+
+.brickOriginal {
 	width:100%;
     height: 100%;
 	margin:0;
 	padding:0;
-	background-image:url(brick_template.svg);
+	background-image:url(brickOriginal_template.svg);
 	background-repeat:no-repeat;
 	position: relative;
+}
+
+.brickOriginal-Blank{
+	width: 90%;
+	height: 90%;
+	background-color: #d3320d;
+}
+
+.brickTopic-Blank{
+	width: 90%;
+	height: 90%;
+	background-color: #8f967e;
 }
 
 .brick-content {
@@ -54,12 +74,6 @@ section {
 	position:absolute;
 	top: 77%;
 	left: 6%;
-}
-
-.brickBlank{
-	width: 90%;
-	height: 90%;
-	background-color: #d3320d;
 }
 
 .cls-1{
@@ -97,3 +111,4 @@ section {
 .not_dragover  {  
 	background-color: initial;  
 } 
+
