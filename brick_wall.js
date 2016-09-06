@@ -3,7 +3,7 @@ function allowDrop(ev) {
     if (ev.target.classList.contains("placeholder")){
         ev.target.classList.add("dragover");
     }
-	else if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brick')[0] === undefined){
+	else if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brickOriginal')[0] === undefined){
         ev.target.classList.add("dragover");
 	}
 }
@@ -16,34 +16,34 @@ function dragleave_handler(ev) {
 }
 
 function drag(ev) {
-    ev.dataTransfer.setData("a_brick", ev.target.id);
+    ev.dataTransfer.setData("a_brickOriginal", ev.target.id);
 }
 
 function drop(ev) {
     ev.preventDefault();ev.stopPropagation();
-	var brick = document.getElementById(ev.dataTransfer.getData("a_brick"));
-	var source_cell = brick.parentElement;
+	var brickOriginal = document.getElementById(ev.dataTransfer.getData("a_brickOriginal"));
+	var source_cell = brickOriginal.parentElement;
 	var source_row = source_cell.parentElement;
 	var row = ev.target.parentElement;
 	if (! row.classList.contains("row")){return false};
-	//drop a brick into a new position
-    if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brick')[0] === undefined){
-        ev.target.appendChild(brick);
+	//drop a brickOriginal into a new position
+    if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brickOriginal')[0] === undefined){
+        ev.target.appendChild(brickOriginal);
         ev.target.classList.remove("dragover");
     }
 	else if (ev.target.classList.contains("placeholder")){
 		var cell = document.createElement("div");
 		cell.classList.add("cell");
-		cell.appendChild(brick);
+		cell.appendChild(brickOriginal);
 		row.insertBefore(cell,ev.target);
 	}
 	// rearrange the original row
 	rearrange(row);
 	if (3 < source_row.getElementsByClassName("cell").length &&
-		source_cell.getElementsByClassName("brick")[0] == undefined){
+		source_cell.getElementsByClassName("brickOriginal")[0] == undefined){
 		var blank = document.createElement("div");
 		source_cell.appendChild(blank);
-		blank.classList.add("brickBlank");
+		blank.classList.add("brickOriginal-Blank");
 	}
 	rearrange(source_row);
 	
@@ -79,25 +79,26 @@ function initialize(){
     // document.addEventListener('dragend', dragend);
 }
 
-function add_brick (){
+function add_brickOriginal (){
     var text = document.getElementById('main_text').value
     text = text.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;');
-    var ref = document.getElementById('ref').value
+    /*var ref = document.getElementById('ref').value*/
     if (text.length < 1){return 0;}
     var cells = document.getElementsByClassName('cell');
     for(let i = cells.length - 1; i >= 0; i--){
-        if (cells[i].getElementsByClassName('brick')[0]){
+        if (cells[i].getElementsByClassName('brickOriginal')[0]){
             continue;
-        }else{
-            cells[i].innerHTML += ('<div id="' + document.getElementsByClassName('brick').length + '" class="brick" draggable="true" ondragstart="drag(event);" ondragend="dragend(event);" >'
+		}else{
+            cells[i].innerHTML += ('<div id="brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" class="brickOriginal" draggable="true" ondragstart="drag(event);" ondragend="dragend(event);" >'
             + '<p class="brick-content">' + text + '</p>'
-            + '<p class="brick-ref">' + ref + '</p>'
+            /*+ '<p class="brick-ref">' + ref + '</p>'*/
             + '</div>')
             break;
         }
     }
     document.getElementById('main_text').value = null;
-    document.getElementById('ref').value = null;
+    /*document.getElementById('ref').value = null;*/
 }
+
 
 window.onload = initialize;
