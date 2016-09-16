@@ -86,7 +86,8 @@ function add_brickOriginal (){
 		}else{
 			cells[i].innerHTML += (
 			//wrap the "brick" with a anchor tag, for linking colorbox
-			'<a id="anchor_brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" href="1402871283927540223.jpg">' 
+			//keep id for "drag()" recognize
+			'<a id="anchor_brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" href="#brickOriginal' + document.getElementsByClassName('brickOriginal').length +  '">' 
 			//then create the brick style`
 			+ '<div id="brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" class="brickOriginal" draggable="true" ondragstart="drag(event);" ondragend="dragend(event);">'
 			//then pull in the main_text and reference
@@ -94,9 +95,15 @@ function add_brickOriginal (){
 			+ '<p class="brick-ref">' + ref + '</p>'
             + '</div>' 
 			+ '</a>');
+			/*create a replication in the .hiddenZone
+			document.getElementsByClassName('hiddenZone').innerHTML += (
+			'<div id="hidden_brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" class="brickOrigianl-hidden">'
+			+ '<p class="brick-content">' + text + '</p>'
+			+ '<p class="brick-ref">' + ref + '</p>'
+            + '</div>');*/
 			//link the anchor tag to the colorbox effect
 			var newAnchor = cells[i].getElementsByTagName('a')[0];
-			$(newAnchor).colorbox();
+			$(newAnchor).colorbox({inline: true, width:"50%", height:"50%"});
 			break;
         }
     }
