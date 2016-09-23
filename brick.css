@@ -15,6 +15,29 @@ section {
 	border-right: none;
 }
 
+.row_Temp {
+	width: 100%;
+	height: 140px;
+	display: flex;
+	box-sizing: border-box;
+	border: 1px  dashed;
+	border-left: none;
+	border-right: none;
+}
+
+.row_Temp_List {
+	width: 100%;
+	height: 100%;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	white-space: nowrap;
+}
+
+.row_Temp_ListItem {
+	display: inline-block;
+	margin-right: 10px;
+}
+
 .placeholder {
 	width: 10px;
 	height: 135px;
@@ -25,6 +48,12 @@ section {
 }
 
 .cell {
+	height: 100%;
+	flex-basis: 100%;
+	background-color: transparent;
+}
+
+.cell_Temp {
 	height: 100%;
 	flex-basis: 100%;
 	background-color: transparent;
@@ -105,5 +134,6 @@ section {
 .not_dragover  {  
 	background-color: initial;  
 } 
+
 
 
