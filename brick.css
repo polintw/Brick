@@ -115,6 +115,16 @@ section {
 	left: -9999px;
 }
 
+.conclusion_Entry {
+}
+
+.conclusion_content {
+	width:500pxpx;
+    height: 200px;
+	position: relative;
+	display: none;
+}
+
 #paste {
     padding: 1%;
     border: 3px ridge;
@@ -134,6 +144,3 @@ section {
 .not_dragover  {  
 	background-color: initial;  
 } 
-
-
-
