@@ -5,26 +5,33 @@
     <link rel="stylesheet" href="./brick.css" />
     <link rel="stylesheet" href="/colorbox-master/colorbox.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js" type="text/javascript"></script>
-	<script src="colorbox-master/jquery.colorbox-min.js"></script>
+	<script src="colorbox-master/jquery.colorbox.js"></script>
 	<script type="text/javascript" src="./brick_wall.js"></script>
     <!--<script src="jquery.gridly.js" type="text/javascript"></script>
     <link href="jquery.gridly.css" rel="stylesheet" type="text/css" />
  --></head>
 <body>
-	<main>	
+	
 	<textarea class="pasteHolder" id="pasteHtml"></textarea>
+    <div id="conclusionBox" class="conclusion_content">
+		<textarea></textarea>
+		<input type="submit" value="產生QR Code" onclick="">
+		<input type="submit" value="收藏歸檔" onclick="">
+		<input type="submit" value="分享至"  onclick="">
+		<input type="submit" value="發表" onclick="">
+	</div>
+	
+	<main>	
     <section>
+    	<h1><a href="brick_index.html">(使用者)</a></h1>
     	<h1>BrickSquare</h1>
     </section>
     <div>
-    	<h3>這裡載入topic</h3>
     	<textarea type="text" id="main_text" name="main_text"></textarea>
 		<p id="ref"></p>
         <input type="submit" value="新增資料" onclick="add_brickOriginal();" >
         <input type="submit" value=" ? " onclick="">
     </div>
-    <input type="button" value="回首頁" onclick="">
-    <input type="button" value="個人資訊" onClick="">
     <section>
         <div class="row">
           <div class="placeholder" ></div>
@@ -44,7 +51,7 @@
           <div class="cell" ></div>
           <div class="placeholder" ></div>
         </div>
-        <input type="button" value="(結論按鈕)">
+        <div><a class="conclusion_Entry" href="#conclusionBox" >結論按鈕</a></div>
         <div class="row">
           <div class="placeholder" ></div>
           <div class="cell" ></div>
@@ -62,6 +69,9 @@
           <div class="placeholder" ></div>
           <div class="cell" ></div>
           <div class="placeholder" ></div>
+        </div>
+        <div>
+        	<h3>這裡載入topic</h3>
         </div>
         <div class="row_Temp">
           <ul class="row_Temp_List">
