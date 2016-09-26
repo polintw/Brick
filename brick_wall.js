@@ -161,6 +161,7 @@ function add_Title(event){
 	document.getElementById('ref').innerHTML = title;
 }
 
+
 function initialize(){
     document.addEventListener('drop', function(ev){
 		if(ev.target.parentElement.classList.contains('row')){
@@ -176,3 +177,15 @@ function initialize(){
 }
 
 window.onload = initialize;
+
+$(document).ready(function() {
+    $('.conclusion_Entry').colorbox({
+		inline: true, width:"50%", height:"50%",
+		onLoad: function(){
+			$('#conclusionBox').show();
+		},
+		onCleanup: function(){
+			$('#conclusionBox').hide();
+		}
+	});
+});
