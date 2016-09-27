@@ -110,11 +110,11 @@ function rearrange(row_){
 
 
 function add_brickOriginal (ev){
-    var text = colorbox.getElementById('main_text').value
+    var text = document.getElementById('main_text').value
     text = text.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;');
 	document.getElementById('test').innerHTML += text;
-	/*var ref = document.getElementById('ref').innerHTML;
-    if (text.length < 1){return 0;}
+	//var ref = document.getElementById('ref').innerHTML;
+    /*if (text.length < 1){return false;}
     var cells = document.getElementsByClassName('cell');
     for(let i = cells.length - 1; i >= 0; i--){
 		if (cells[i].getElementsByClassName('brickOriginal')[0]){
@@ -138,9 +138,9 @@ function add_brickOriginal (ev){
 			$.colorbox.close();
 			/*break;
         }
-    }
+    }*/
     document.getElementById('main_text').value = null;
-    document.getElementById('ref').innerHTML = null;*/
+   //document.getElementById('ref').innerHTML = null;
 }
 
 function add_Title(event){
@@ -182,6 +182,10 @@ $(document).ready(function() {
 		}
 	});
 	$('.cell-default').colorbox({
-		html:'<textarea class="input-new" id="main_text"></textarea><br><p id="ref"></p><br><input type="submit" value="新增磚頭" onclick="add_brickOriginal();">', width:"30%", height:"50%", closeButton: false, 
+		href:"#addBox", inline: true, width:"30%", height:"50%", closeButton: false, onLoad: function(){
+			$('#addBox').show();
+		}, onCleanup: function(){
+			$('#addBox').hide();
+		}
 	});
 });
