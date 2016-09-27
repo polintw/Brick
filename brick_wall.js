@@ -108,18 +108,9 @@ function rearrange(row_){
 	row_.insertBefore(placeholder, row_.getElementsByClassName('cell_Temp')[0]);
 }
 
-/* function dragend(ev) {
-    var tds = document.getElementsByTagName('td');
-    for(let i = 0; i < tds.length; i++){
-        if (tds[i].classList.contains("dragover")){
-            tds[i].classList.remove("dragover");
-        }
-    }
-} */
-
 
 function add_brickOriginal (){
-    var text = document.getElementById('main_text').value
+    /*var text = document.getElementById('main_text').value
     text = text.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;');
 	var ref = document.getElementById('ref').innerHTML;
     if (text.length < 1){return 0;}
@@ -128,20 +119,20 @@ function add_brickOriginal (){
 		if (cells[i].getElementsByClassName('brickOriginal')[0]){
             continue;
 		}else{
-			cells[i].innerHTML += (
+			cells[i].innerHTML += (*/
 			//wrap the "brick" with a anchor tag, for linking colorbox
 			//And wrap the anchor tag with a block
 			//keep id for "drag()" recognize
-			'<a id="anchor_brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" href="#brickOriginal' + document.getElementsByClassName('brickOriginal').length +  '">' 
+			this.innerHTML += ('<a id="anchor_brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" href="#brickOriginal' + document.getElementsByClassName('brickOriginal').length +  '">' 
 			//then create the brick style`
-			+ '<div id="brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" class="brickOriginal" draggable="true" ondragstart="drag(event);" ondragend="dragend(event);">'
+			+ '<div id="brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" class="brickOriginal" draggable="true" ondragstart="drag(event);">'
 			//then pull in the main_text and reference
-            + '<p class="brick-content">' + text + '</p>'
-			+ '<p class="brick-ref">' + ref + '</p>'
+            + '<textarea class="brick-content">' + '</textarea>'
+			+ '<p class="brick-ref">' + '</p>'
             + '</div>' 
 			+ '</a>');
 			//link the anchor tag to the colorbox effect
-			var newAnchor = cells[i].getElementsByTagName('a')[0];
+			var newAnchor = this.getElementsByTagName('a')[0];
 			$(newAnchor).colorbox({inline: true, width:"50%", height:"50%"});
 			break;
         }
