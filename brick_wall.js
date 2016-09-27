@@ -123,8 +123,7 @@ function add_brickOriginal (ev){
 			//wrap the "brick" with a anchor tag, for linking colorbox
 			//And wrap the anchor tag with a block
 			//keep id for "drag()" recognize
-			ev.preventDefault();
-			ev.target.innerHTML += ('<a id="anchor_brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" href="#brickOriginal' + document.getElementsByClassName('brickOriginal').length +  '">' 
+			/*ev.target.innerHTML += ('<a id="anchor_brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" href="#brickOriginal' + document.getElementsByClassName('brickOriginal').length +  '">' 
 			//then create the brick style`
 			+ '<div id="brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" class="brickOriginal" draggable="true" ondragstart="drag(event);">'
 			//then pull in the main_text and reference
@@ -134,7 +133,8 @@ function add_brickOriginal (ev){
 			+ '</a>');
 			//link the anchor tag to the colorbox effect
 			var newAnchor = ev.target.getElementsByTagName('a')[0];
-			$(newAnchor).colorbox({inline: true, width:"50%", height:"50%"});
+			$(newAnchor).colorbox({inline: true, width:"50%", height:"50%"});*/
+			$.colobox.close();
 			/*break;
         }
     }
@@ -179,5 +179,8 @@ $(document).ready(function() {
 		onCleanup: function(){
 			$('#conclusionBox').hide();
 		}
+	});
+	$('.cell-default').colorbox({
+		html:'<textarea class="input-new" id="main_text"></textarea><br><p id="ref"></p><br><input type="submit" value="新增磚頭" onclick="add_brickOriginal();">', width:"30%", height:"50%", closeButton: false, 
 	});
 });
