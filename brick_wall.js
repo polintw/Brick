@@ -109,7 +109,7 @@ function rearrange(row_){
 }
 
 
-function add_brickOriginal (){
+function add_brickOriginal (ev){
     /*var text = document.getElementById('main_text').value
     text = text.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;');
 	var ref = document.getElementById('ref').innerHTML;
@@ -123,7 +123,8 @@ function add_brickOriginal (){
 			//wrap the "brick" with a anchor tag, for linking colorbox
 			//And wrap the anchor tag with a block
 			//keep id for "drag()" recognize
-			this.innerHTML += ('<a id="anchor_brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" href="#brickOriginal' + document.getElementsByClassName('brickOriginal').length +  '">' 
+			ev.preventDefault();
+			ev.target.innerHTML += ('<a id="anchor_brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" href="#brickOriginal' + document.getElementsByClassName('brickOriginal').length +  '">' 
 			//then create the brick style`
 			+ '<div id="brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" class="brickOriginal" draggable="true" ondragstart="drag(event);">'
 			//then pull in the main_text and reference
@@ -132,13 +133,13 @@ function add_brickOriginal (){
             + '</div>' 
 			+ '</a>');
 			//link the anchor tag to the colorbox effect
-			var newAnchor = this.getElementsByTagName('a')[0];
+			var newAnchor = ev.target.getElementsByTagName('a')[0];
 			$(newAnchor).colorbox({inline: true, width:"50%", height:"50%"});
-			break;
+			/*break;
         }
     }
     document.getElementById('main_text').value = null;
-    document.getElementById('ref').innerHTML = null;
+    document.getElementById('ref').innerHTML = null;*/
 }
 
 function add_Title(event){
