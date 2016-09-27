@@ -110,9 +110,10 @@ function rearrange(row_){
 
 
 function add_brickOriginal (ev){
-    /*var text = document.getElementById('main_text').value
+    var text = colorbox.getElementById('main_text').value
     text = text.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;');
-	var ref = document.getElementById('ref').innerHTML;
+	document.getElementById('test').innerHTML += text;
+	/*var ref = document.getElementById('ref').innerHTML;
     if (text.length < 1){return 0;}
     var cells = document.getElementsByClassName('cell');
     for(let i = cells.length - 1; i >= 0; i--){
@@ -134,7 +135,7 @@ function add_brickOriginal (ev){
 			//link the anchor tag to the colorbox effect
 			var newAnchor = ev.target.getElementsByTagName('a')[0];
 			$(newAnchor).colorbox({inline: true, width:"50%", height:"50%"});*/
-			$.colobox.close();
+			$.colorbox.close();
 			/*break;
         }
     }
