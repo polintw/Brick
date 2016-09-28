@@ -116,6 +116,12 @@ section {
 	font-size: 1 em;
 }
 
+.add-dialogbox {
+	width:500pxpx;
+    height: 200px;
+	display: none;
+}
+
 .input-new {
 	width: 80%;
 }
@@ -134,6 +140,7 @@ section {
 	position: relative;
 	display: none;
 }
+
 
 #paste {
     padding: 1%;
