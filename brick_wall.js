@@ -154,7 +154,6 @@ function add_Title(event){
 	document.getElementById('ref').innerHTML = title;
 }
 
-
 function initialize(){
     document.addEventListener('drop', function(ev){
 		if(ev.target.parentElement.classList.contains('row')){
@@ -189,3 +188,12 @@ $(document).ready(function() {
 		}
 	});
 });
+
+function test_colorbox(ev){
+	$.colorbox({href:"#addBox", inline: true, width:"30%", height:"50%", closeButton: false, onLoad: function(){
+			$('#addBox').show();
+		}, onCleanup: function(){
+			$('#addBox').hide();
+		}
+	});
+}
