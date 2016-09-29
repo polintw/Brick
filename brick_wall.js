@@ -108,41 +108,6 @@ function rearrange(row_){
 	row_.insertBefore(placeholder, row_.getElementsByClassName('cell_Temp')[0]);
 }
 
-
-function add_brickOriginal (ev){
-    var text = document.getElementById('main_text').value
-    text = text.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;');
-	document.getElementById('test').innerHTML += text;
-	//var ref = document.getElementById('ref').innerHTML;
-    /*if (text.length < 1){return false;}
-    var cells = document.getElementsByClassName('cell');
-    for(let i = cells.length - 1; i >= 0; i--){
-		if (cells[i].getElementsByClassName('brickOriginal')[0]){
-            continue;
-		}else{
-			cells[i].innerHTML += (*/
-			//wrap the "brick" with a anchor tag, for linking colorbox
-			//And wrap the anchor tag with a block
-			//keep id for "drag()" recognize
-			/*ev.target.innerHTML += ('<a id="anchor_brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" href="#brickOriginal' + document.getElementsByClassName('brickOriginal').length +  '">' 
-			//then create the brick style`
-			+ '<div id="brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" class="brickOriginal" draggable="true" ondragstart="drag(event);">'
-			//then pull in the main_text and reference
-            + '<textarea class="brick-content">' + '</textarea>'
-			+ '<p class="brick-ref">' + '</p>'
-            + '</div>' 
-			+ '</a>');
-			//link the anchor tag to the colorbox effect
-			var newAnchor = ev.target.getElementsByTagName('a')[0];
-			$(newAnchor).colorbox({inline: true, width:"50%", height:"50%"});*/
-			$.colorbox.close();
-			/*break;
-        }
-    }*/
-    document.getElementById('main_text').value = null;
-   //document.getElementById('ref').innerHTML = null;
-}
-
 function add_Title(event){
 	var html = event.clipboardData.getData('text/html');
 	document.getElementById('pasteHtml').innerHTML = html;
@@ -172,7 +137,9 @@ window.onload = initialize;
 
 $(document).ready(function() {
     $('.conclusion_Entry').colorbox({
-		inline: true, width:"50%", height:"50%",
+		inline: true,
+		width:"50%",
+		height:"50%",
 		onLoad: function(){
 			$('#conclusionBox').show();
 		},
@@ -180,20 +147,56 @@ $(document).ready(function() {
 			$('#conclusionBox').hide();
 		}
 	});
-	$('.cell-default').colorbox({
-		href:"#addBox", inline: true, width:"30%", height:"50%", closeButton: false, onLoad: function(){
-			$('#addBox').show();
-		}, onCleanup: function(){
-			$('#addBox').hide();
-		}
-	});
+	set_Colorbox_celldefault();
 });
 
-function test_colorbox(ev){
-	$.colorbox({href:"#addBox", inline: true, width:"30%", height:"50%", closeButton: false, onLoad: function(){
+function set_Colorbox_celldefault(){
+	$('.cell-default').colorbox({
+		href:"#addBox",
+		inline: true,
+		width:"30%",
+		height:"50%",
+		closeButton: false,
+		onLoad: function(){
 			$('#addBox').show();
-		}, onCleanup: function(){
+		}, 
+		onCleanup: function(obj){
 			$('#addBox').hide();
+			var text = document.getElementById('main_text').value;
+			var ref = document.getElementById('ref').innerHTML;
+			var container = obj.el;
+			text = text.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;');
+			ref = ref.replace(/ /g, '&nbsp;');
+			if (text.length < 1){
+				return false;
+			} else {
+				var cell = document.createElement('div');
+				cell.classList.add('cell');
+				$(container).replaceWith(cell);
+				cell.innerHTML += (
+				//wrap the "brick" with a anchor tag, for linking colorbox
+				//And wrap the anchor tag with a block
+				//keep id for "drag()" recognize
+				'<a id="anchor_brickOriginal' 
+				+ document.getElementsByClassName('brickOriginal').length 
+				+ '" href="#brickOriginal' 
+				+ document.getElementsByClassName('brickOriginal').length 
+				+  '">'
+				//then create the brick style`
+				+ '<div id="brickOriginal' 
+				+ document.getElementsByClassName('brickOriginal').length 
+				+ '" class="brickOriginal" draggable="true" ondragstart="drag(event);">'
+				//then pull in the main_text and reference
+            	+ '<div class="brick-content">' + text + '</div>'
+				+ '<p class="brick-ref">' + ref + '</p>'
+            	+ '</div>' 
+				+ '</a>');
+				//link the anchor tag to the colorbox effect
+				var newAnchor = cell.getElementsByTagName('a')[0];
+				$(newAnchor).colorbox({inline: true, width:"50%", height:"50%"});
+				document.getElementById('main_text').value = null;
+   				document.getElementById('ref').innerHTML = null;
+			}
 		}
 	});
 }
