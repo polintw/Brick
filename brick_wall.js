@@ -19,28 +19,35 @@ function dragover_handler(ev) {
     ev.preventDefault();
     if (ev.target.classList.contains("placeholder")){
 		var row = ev.target.parentElement;
-		var cell = document.createElement("div");
-		cell.classList.add("cell_Temp");
-		row.insertBefore(cell,ev.target);
+		ev.target.classList.add('cell_Temp');
+		ev.target.classList.remove('placeholder');
 		rearrange(row);
     }
-	else if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brickOriginal')[0] === undefined){
+	else if (ev.target.classList.contains("cell-default")){
         ev.target.classList.add("dragover");
 	}
 }
 
 function drop(ev) {
     ev.preventDefault();ev.stopPropagation();
+	var cell = document.createElement('div')
 	var brick = document.getElementById(ev.dataTransfer.getData("a_brick"));
 	var source_cell = brick.parentElement;
 	var source_row = source_cell.parentElement;
 	var row = ev.target.parentElement;
+	cell.classList.add('cell');
+	cell.appendChild(brick);
+	if (ev.target.classList.contains("cell-default" || 'cell_Temp')) {
+		$(ev.target).replaceWith(cell);
+	}
+	source_cell.classList.remove('cell');
+	source_cell.classList.add('cell-default');
+	set_Colorbox_celldefault(source_cell);
 	//drop a brickOriginal into a new position
-    if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brickOriginal')[0] === undefined){
+    /*if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brickOriginal')[0] === undefined){
         ev.target.appendChild(brick);
         ev.target.classList.remove("dragover");
-    }
-	else if (ev.target.classList.contains("cell_Temp")){
+    }else if (ev.target.classList.contains("cell_Temp")){
 		var cell = document.createElement("div");
 		cell.classList.add("cell");
 		cell.appendChild(brick);
@@ -62,7 +69,7 @@ function drop(ev) {
 		//no rearrange, but modified style	 
 		brick.getElementsByClassName('brickOriginal')[0].style.width = '100%';
 	 	brick.getElementsByClassName('brickOriginal')[0].style.height = '100%';
-	}
+	}*/
 }
 
 function drop_toTemp(ev){
@@ -94,18 +101,27 @@ function drop_toTemp(ev){
 	 }
 }
 
-function rearrange(row_){
-	while (row_.getElementsByClassName("placeholder")[0]){
-		row_.removeChild(row_.getElementsByClassName("placeholder")[0]);
-	}
-	for (let i = 0; i < row_.getElementsByClassName("cell").length + 1; i++){
-		var placeholder = document.createElement("div");
-		placeholder.classList.add("placeholder");
-		row_.insertBefore(placeholder,row_.getElementsByClassName("cell")[i]);
+function rearrange(row){
+	while (row.getElementsByClassName("placeholder")[0]){
+		row.removeChild(row.getElementsByClassName("placeholder")[0]);
 	}
 	var placeholder = document.createElement("div");
-	placeholder.classList.add("placeholder");
-	row_.insertBefore(placeholder, row_.getElementsByClassName('cell_Temp')[0]);
+	if(row.getElementsByClassName('cell')){
+		for (let i = 0; i < row.getElementsByClassName("cell").length + 1; i++){
+			placeholder.classList.add("placeholder");
+			row.insertBefore(placeholder,row.getElementsByClassName("cell")[i]);
+		}
+	}else if(row.getElementsByClassName('cell_Temp')){
+		for (let i = 0; i < row.getElementsByClassName("cell_Temp").length + 1; i++){
+			placeholder.classList.add("placeholder");
+			row.insertBefore(placeholder,row.getElementsByClassName("cell_Temp")[i]);
+		}
+	}else if(row.getElementsByClassName('cell-default')){
+		for (let i = 0; i < row.getElementsByClassName("cell-default").length + 1; i++){
+			placeholder.classList.add("placeholder");
+			row.insertBefore(placeholder,row.getElementsByClassName("cell-default")[i]);
+		}
+	}
 }
 
 function add_Title(event){
@@ -147,11 +163,11 @@ $(document).ready(function() {
 			$('#conclusionBox').hide();
 		}
 	});
-	set_Colorbox_celldefault();
+	set_Colorbox_celldefault('.cell-default');
 });
 
-function set_Colorbox_celldefault(){
-	$('.cell-default').colorbox({
+function set_Colorbox_celldefault(targetElement){
+	$(targetElement).colorbox({
 		href:"#addBox",
 		inline: true,
 		width:"30%",
