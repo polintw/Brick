@@ -21,7 +21,7 @@ function dragover_handler(ev) {
 		var row = ev.target.parentElement;
 		ev.target.classList.add('cell_Temp');
 		ev.target.classList.remove('placeholder');
-		rearrange(row);
+		//rearrange(row);
     }
 	else if (ev.target.classList.contains("cell-default")){
         ev.target.classList.add("dragover");
@@ -37,7 +37,7 @@ function drop(ev) {
 	var row = ev.target.parentElement;
 	cell.classList.add('cell');
 	cell.appendChild(brick);
-	if (ev.target.classList.contains("cell-default" || 'cell_Temp')) {
+	if (ev.target.classList.contains("cell-default") || ev.target.classList.contains('cell_Temp')) {
 		$(ev.target).replaceWith(cell);
 	}
 	source_cell.classList.remove('cell');
