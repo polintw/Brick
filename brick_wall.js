@@ -10,8 +10,8 @@ function dragleave_handler(ev) {
 	};
 	if(ev.target.classList.contains('cell_Temp')){
 		var row = ev.target.parentElement;
+		row.removeChild(ev.target.previousSibling);
 		row.removeChild(ev.target);
-		rearrange(row);
 	}
 }
 
@@ -19,9 +19,12 @@ function dragover_handler(ev) {
     ev.preventDefault();
     if (ev.target.classList.contains("placeholder")){
 		var row = ev.target.parentElement;
-		ev.target.classList.add('cell_Temp');
-		ev.target.classList.remove('placeholder');
-		//rearrange(row);
+		var newCell = document.createElement('div');
+		var newPlaceholder = document.createElement('div');
+		newCell.className = 'cell_Temp';
+		newPlaceholder.className = 'placeholder';
+		row.insertBefore(newCell, ev.target);
+		row.insertBefore(newPlaceholder, newCell);
     }
 	else if (ev.target.classList.contains("cell-default")){
         ev.target.classList.add("dragover");
@@ -35,41 +38,29 @@ function drop(ev) {
 	var source_cell = brick.parentElement;
 	var source_row = source_cell.parentElement;
 	var row = ev.target.parentElement;
+	//put the data into a new cell 
 	cell.classList.add('cell');
 	cell.appendChild(brick);
+	//replace the target when dropping
 	if (ev.target.classList.contains("cell-default") || ev.target.classList.contains('cell_Temp')) {
 		$(ev.target).replaceWith(cell);
 	}
-	source_cell.classList.remove('cell');
-	source_cell.classList.add('cell-default');
-	set_Colorbox_celldefault(source_cell);
-	//drop a brickOriginal into a new position
-    /*if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brickOriginal')[0] === undefined){
-        ev.target.appendChild(brick);
-        ev.target.classList.remove("dragover");
-    }else if (ev.target.classList.contains("cell_Temp")){
-		var cell = document.createElement("div");
-		cell.classList.add("cell");
-		cell.appendChild(brick);
-		row.insertBefore(cell,ev.target);
-		row.removeChild(ev.target);
-	}
-	rearrange(row);
-	// different move for different source
+	// add a blank brick into the source cell
 	if(source_cell.classList.contains('cell')){
 		// rearrange the original row
-		if (3 < source_row.getElementsByClassName("cell").length &&
-		source_cell.getElementsByClassName("brickOriginal")[0] === undefined){
+		if (3 < source_row.getElementsByClassName("cell").length + source_row.getElementsByClassName("cell-default").length){
 		var blank = document.createElement("div");
 		source_cell.appendChild(blank);
 		blank.classList.add("brickOriginal-Blank");
 		}
-		rearrange(source_row);
 	}else if (source_cell.classList.contains('row_Temp_ListItem')){
-		//no rearrange, but modified style	 
+		//modified style	 
 		brick.getElementsByClassName('brickOriginal')[0].style.width = '100%';
 	 	brick.getElementsByClassName('brickOriginal')[0].style.height = '100%';
-	}*/
+	}
+	//source cell transfer to default one and link to colorbox effect 
+	source_cell.className = 'cell-default';
+	set_Colorbox_celldefault(source_cell);
 }
 
 function drop_toTemp(ev){
@@ -81,48 +72,46 @@ function drop_toTemp(ev){
 	 if(source_cell.classList.contains('row_Temp_ListItem')){
 		 return false;
 	 }else{
-		 brick.getElementsByClassName('brickOriginal')[0].style.width = '280px';
-		 brick.getElementsByClassName('brickOriginal')[0].style.height = '128px';
-		 var li = document.createElement('li');
-		 li.classList.add('row_Temp_ListItem');
-		 li.appendChild(brick);
-		 if(tipOn.classList.contains('row_Temp_List')){
-			 tipOn.insertBefore(li, tipOn.childNodes[0]);
-			 }/*else if(tipOn.classList.contains('row_Temp_ListItem')){
-				 document.getElementsByClassName('row_Temp_List').insertBefore(li,document.getElementsByClassName('row_Temp_List').childNodes[0]);
-	 };*/
-	 	if (3 < source_row.getElementsByClassName("cell").length &&
-			source_cell.getElementsByClassName("brickOriginal")[0] === undefined){
+		brick.getElementsByClassName('brickOriginal')[0].style.width = '280px';
+		brick.getElementsByClassName('brickOriginal')[0].style.height = '128px';
+		var li = document.createElement('li');
+		li.classList.add('row_Temp_ListItem');
+		li.appendChild(brick);
+		if(tipOn.classList.contains('row_Temp_List')){
+			tipOn.insertBefore(li, tipOn.childNodes[0]);
+		}/*else if(tipOn.classList.contains('row_Temp_ListItem')){
+			tipOn.parentElement.insertBefore(li,tipOn.parentElement.childNodes[0]);
+	 	}*/
+	 	if (3 < source_row.getElementsByClassName("cell").length + source_row.getElementsByClassName("cell-default").length){
 			var blank = document.createElement("div");
 			source_cell.appendChild(blank);
 			blank.classList.add("brickOriginal-Blank");
 	 	}
-	 	rearrange(source_row);
 	 }
 }
 
-function rearrange(row){
-	while (row.getElementsByClassName("placeholder")[0]){
-		row.removeChild(row.getElementsByClassName("placeholder")[0]);
+/*function rearrange(row_){
+	while (row_.getElementsByClassName("placeholder")[0]){
+		row_.removeChild(row_.getElementsByClassName("placeholder")[0]);
 	}
 	var placeholder = document.createElement("div");
-	if(row.getElementsByClassName('cell')){
-		for (let i = 0; i < row.getElementsByClassName("cell").length + 1; i++){
+	if(row_.getElementsByClassName('cell')){
+		for (let i = 0; i < row_.getElementsByClassName("cell").length; i++){
 			placeholder.classList.add("placeholder");
-			row.insertBefore(placeholder,row.getElementsByClassName("cell")[i]);
+			row_.insertBefore(placeholder,row.getElementsByClassName("cell")[i]);
 		}
-	}else if(row.getElementsByClassName('cell_Temp')){
-		for (let i = 0; i < row.getElementsByClassName("cell_Temp").length + 1; i++){
+	}else if(row_.getElementsByClassName('cell_Temp')){
+		for (let i = 0; i < row_.getElementsByClassName("cell_Temp").length; i++){
 			placeholder.classList.add("placeholder");
-			row.insertBefore(placeholder,row.getElementsByClassName("cell_Temp")[i]);
+			row_.insertBefore(placeholder,row_.getElementsByClassName("cell_Temp")[i]);
 		}
-	}else if(row.getElementsByClassName('cell-default')){
-		for (let i = 0; i < row.getElementsByClassName("cell-default").length + 1; i++){
+	}else if(row_.getElementsByClassName('cell-default')){
+		for (let i = 0; i < row_.getElementsByClassName("cell-default").length; i++){
 			placeholder.classList.add("placeholder");
-			row.insertBefore(placeholder,row.getElementsByClassName("cell-default")[i]);
+			row_.insertBefore(placeholder,row_.getElementsByClassName("cell-default")[i]);
 		}
 	}
-}
+}*/
 
 function add_Title(event){
 	var html = event.clipboardData.getData('text/html');
@@ -146,7 +135,6 @@ function initialize(){
     document.addEventListener('dragover', dragover_handler);
     document.addEventListener('dragleave', dragleave_handler);
 	document.getElementById('main_text').addEventListener('paste', add_Title);
-    // document.addEventListener('dragend', dragend);
 }
 
 window.onload = initialize;
@@ -191,8 +179,7 @@ function set_Colorbox_celldefault(targetElement){
 				$(container).replaceWith(cell);
 				cell.innerHTML += (
 				//wrap the "brick" with a anchor tag, for linking colorbox
-				//And wrap the anchor tag with a block
-				//keep id for "drag()" recognize
+				//id of the anchor was used by "drag()"
 				'<a id="anchor_brickOriginal' 
 				+ document.getElementsByClassName('brickOriginal').length 
 				+ '" href="#brickOriginal' 
