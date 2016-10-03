@@ -57,6 +57,8 @@ function drop(ev) {
 		//modified style	 
 		brick.getElementsByClassName('brickOriginal')[0].style.width = '100%';
 	 	brick.getElementsByClassName('brickOriginal')[0].style.height = '100%';
+		//delete the empty list element
+		source_cell.remove();
 	}
 	//source cell transfer to default one and link to colorbox effect 
 	source_cell.className = 'cell-default';
@@ -68,25 +70,33 @@ function drop_toTemp(ev){
 	 var brick = document.getElementById(ev.dataTransfer.getData("a_brick"));
 	 var source_cell = brick.parentElement;
 	 var source_row = source_cell.parentElement;
-	 var tipOn = ev.target;
+	 var locationOn = ev.target;
+	 //check source, forbidden temp row to temp row
 	 if(source_cell.classList.contains('row_Temp_ListItem')){
 		 return false;
-	 }else{
-		brick.getElementsByClassName('brickOriginal')[0].style.width = '280px';
-		brick.getElementsByClassName('brickOriginal')[0].style.height = '128px';
+	 }else if(source_cell.classList.contains('cell')){
+		//create a new list element and append the drag data
 		var li = document.createElement('li');
 		li.classList.add('row_Temp_ListItem');
 		li.appendChild(brick);
-		if(tipOn.classList.contains('row_Temp_List')){
-			tipOn.insertBefore(li, tipOn.childNodes[0]);
-		}/*else if(tipOn.classList.contains('row_Temp_ListItem')){
-			tipOn.parentElement.insertBefore(li,tipOn.parentElement.childNodes[0]);
-	 	}*/
+		//lock width and height
+		brick.getElementsByClassName('brickOriginal')[0].style.width = '280px';
+		brick.getElementsByClassName('brickOriginal')[0].style.height = '128px';
+		if(locationOn.classList.contains('row_Temp_List')){
+			locationOn.insertBefore(li, locationOn.childNodes[0]);
+			tempListItem_addListener(li.getElementsByClassName('brickOriginal')[0]);
+		}else if(locationOn.parentElement.classList.contains('brickOriginal')){
+			document.getElementsByClassName('row_Temp_List')[0].insertBefore(li, document.getElementsByClassName('row_Temp_List')[0].childNodes[0]);
+			tempListItem_addListener(li.getElementsByClassName('brickOriginal')[0]);
+	 	}
+		//manage source row
 	 	if (3 < source_row.getElementsByClassName("cell").length + source_row.getElementsByClassName("cell-default").length){
 			var blank = document.createElement("div");
 			source_cell.appendChild(blank);
 			blank.classList.add("brickOriginal-Blank");
 	 	}
+		source_cell.className = 'cell-default';
+		set_Colorbox_celldefault(source_cell);
 	 }
 }
 
@@ -135,6 +145,10 @@ function initialize(){
     document.addEventListener('dragover', dragover_handler);
     document.addEventListener('dragleave', dragleave_handler);
 	document.getElementById('main_text').addEventListener('paste', add_Title);
+}
+
+function tempListItem_addListener(listItem) {
+	listItem.addEventListener('drop', drop_toTemp);
 }
 
 window.onload = initialize;
