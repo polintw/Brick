@@ -10,8 +10,8 @@ function dragleave_handler(ev) {
 	};
 	if(ev.target.classList.contains('cell_Temp')){
 		var row = ev.target.parentElement;
+		row.removeChild(ev.target.previousSibling);
 		row.removeChild(ev.target);
-		rearrange(row);
 	}
 }
 
@@ -19,50 +19,50 @@ function dragover_handler(ev) {
     ev.preventDefault();
     if (ev.target.classList.contains("placeholder")){
 		var row = ev.target.parentElement;
-		var cell = document.createElement("div");
-		cell.classList.add("cell_Temp");
-		row.insertBefore(cell,ev.target);
-		rearrange(row);
+		var newCell = document.createElement('div');
+		var newPlaceholder = document.createElement('div');
+		newCell.className = 'cell_Temp';
+		newPlaceholder.className = 'placeholder';
+		row.insertBefore(newCell, ev.target);
+		row.insertBefore(newPlaceholder, newCell);
     }
-	else if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brickOriginal')[0] === undefined){
+	else if (ev.target.classList.contains("cell-default")){
         ev.target.classList.add("dragover");
 	}
 }
 
 function drop(ev) {
     ev.preventDefault();ev.stopPropagation();
+	var cell = document.createElement('div')
 	var brick = document.getElementById(ev.dataTransfer.getData("a_brick"));
 	var source_cell = brick.parentElement;
 	var source_row = source_cell.parentElement;
 	var row = ev.target.parentElement;
-	//drop a brickOriginal into a new position
-    if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brickOriginal')[0] === undefined){
-        ev.target.appendChild(brick);
-        ev.target.classList.remove("dragover");
-    }
-	else if (ev.target.classList.contains("cell_Temp")){
-		var cell = document.createElement("div");
-		cell.classList.add("cell");
-		cell.appendChild(brick);
-		row.insertBefore(cell,ev.target);
-		row.removeChild(ev.target);
+	//put the data into a new cell 
+	cell.classList.add('cell');
+	cell.appendChild(brick);
+	//replace the target when dropping
+	if (ev.target.classList.contains("cell-default") || ev.target.classList.contains('cell_Temp')) {
+		$(ev.target).replaceWith(cell);
 	}
-	rearrange(row);
-	// different move for different source
+	// add a blank brick into the source cell
 	if(source_cell.classList.contains('cell')){
 		// rearrange the original row
-		if (3 < source_row.getElementsByClassName("cell").length &&
-		source_cell.getElementsByClassName("brickOriginal")[0] === undefined){
+		if (3 < source_row.getElementsByClassName("cell").length + source_row.getElementsByClassName("cell-default").length){
 		var blank = document.createElement("div");
 		source_cell.appendChild(blank);
 		blank.classList.add("brickOriginal-Blank");
 		}
-		rearrange(source_row);
 	}else if (source_cell.classList.contains('row_Temp_ListItem')){
-		//no rearrange, but modified style	 
+		//modified style	 
 		brick.getElementsByClassName('brickOriginal')[0].style.width = '100%';
 	 	brick.getElementsByClassName('brickOriginal')[0].style.height = '100%';
+		//delete the empty list element
+		source_cell.remove();
 	}
+	//source cell transfer to default one and link to colorbox effect 
+	source_cell.className = 'cell-default';
+	set_Colorbox_celldefault(source_cell);
 }
 
 function drop_toTemp(ev){
@@ -70,85 +70,52 @@ function drop_toTemp(ev){
 	 var brick = document.getElementById(ev.dataTransfer.getData("a_brick"));
 	 var source_cell = brick.parentElement;
 	 var source_row = source_cell.parentElement;
-	 var tipOn = ev.target;
+	 //check source, forbidden temp row to temp row
 	 if(source_cell.classList.contains('row_Temp_ListItem')){
 		 return false;
-	 }else{
-		 brick.getElementsByClassName('brickOriginal')[0].style.width = '280px';
-		 brick.getElementsByClassName('brickOriginal')[0].style.height = '128px';
-		 var li = document.createElement('li');
-		 li.classList.add('row_Temp_ListItem');
-		 li.appendChild(brick);
-		 if(tipOn.classList.contains('row_Temp_List')){
-			 tipOn.insertBefore(li, tipOn.childNodes[0]);
-			 }/*else if(tipOn.classList.contains('row_Temp_ListItem')){
-				 document.getElementsByClassName('row_Temp_List').insertBefore(li,document.getElementsByClassName('row_Temp_List').childNodes[0]);
-	 };*/
-	 	if (3 < source_row.getElementsByClassName("cell").length &&
-			source_cell.getElementsByClassName("brickOriginal")[0] === undefined){
+	 }else if(source_cell.classList.contains('cell')){
+		//create a new list element and append the drag data
+		var li = document.createElement('li');
+		li.classList.add('row_Temp_ListItem');
+		li.appendChild(brick);
+		//lock width and height
+		brick.getElementsByClassName('brickOriginal')[0].style.width = '280px';
+		brick.getElementsByClassName('brickOriginal')[0].style.height = '128px';
+		//add brick into the temp row
+		document.getElementsByClassName('row_Temp_List')[0].insertBefore(li, document.getElementsByClassName('row_Temp_List')[0].childNodes[0]);
+		//manage source row
+	 	if (3 < source_row.getElementsByClassName("cell").length + source_row.getElementsByClassName("cell-default").length){
 			var blank = document.createElement("div");
 			source_cell.appendChild(blank);
 			blank.classList.add("brickOriginal-Blank");
 	 	}
-	 	rearrange(source_row);
+		source_cell.className = 'cell-default';
+		set_Colorbox_celldefault(source_cell);
 	 }
 }
 
-function rearrange(row_){
+/*function rearrange(row_){
 	while (row_.getElementsByClassName("placeholder")[0]){
 		row_.removeChild(row_.getElementsByClassName("placeholder")[0]);
 	}
-	for (let i = 0; i < row_.getElementsByClassName("cell").length + 1; i++){
-		var placeholder = document.createElement("div");
-		placeholder.classList.add("placeholder");
-		row_.insertBefore(placeholder,row_.getElementsByClassName("cell")[i]);
-	}
 	var placeholder = document.createElement("div");
-	placeholder.classList.add("placeholder");
-	row_.insertBefore(placeholder, row_.getElementsByClassName('cell_Temp')[0]);
-}
-
-/* function dragend(ev) {
-    var tds = document.getElementsByTagName('td');
-    for(let i = 0; i < tds.length; i++){
-        if (tds[i].classList.contains("dragover")){
-            tds[i].classList.remove("dragover");
-        }
-    }
-} */
-
-
-function add_brickOriginal (){
-    var text = document.getElementById('main_text').value
-    text = text.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;');
-	var ref = document.getElementById('ref').innerHTML;
-    if (text.length < 1){return 0;}
-    var cells = document.getElementsByClassName('cell');
-    for(let i = cells.length - 1; i >= 0; i--){
-		if (cells[i].getElementsByClassName('brickOriginal')[0]){
-            continue;
-		}else{
-			cells[i].innerHTML += (
-			//wrap the "brick" with a anchor tag, for linking colorbox
-			//And wrap the anchor tag with a block
-			//keep id for "drag()" recognize
-			'<a id="anchor_brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" href="#brickOriginal' + document.getElementsByClassName('brickOriginal').length +  '">' 
-			//then create the brick style`
-			+ '<div id="brickOriginal' + document.getElementsByClassName('brickOriginal').length + '" class="brickOriginal" draggable="true" ondragstart="drag(event);" ondragend="dragend(event);">'
-			//then pull in the main_text and reference
-            + '<p class="brick-content">' + text + '</p>'
-			+ '<p class="brick-ref">' + ref + '</p>'
-            + '</div>' 
-			+ '</a>');
-			//link the anchor tag to the colorbox effect
-			var newAnchor = cells[i].getElementsByTagName('a')[0];
-			$(newAnchor).colorbox({inline: true, width:"50%", height:"50%"});
-			break;
-        }
-    }
-    document.getElementById('main_text').value = null;
-    document.getElementById('ref').innerHTML = null;
-}
+	if(row_.getElementsByClassName('cell')){
+		for (let i = 0; i < row_.getElementsByClassName("cell").length; i++){
+			placeholder.classList.add("placeholder");
+			row_.insertBefore(placeholder,row.getElementsByClassName("cell")[i]);
+		}
+	}else if(row_.getElementsByClassName('cell_Temp')){
+		for (let i = 0; i < row_.getElementsByClassName("cell_Temp").length; i++){
+			placeholder.classList.add("placeholder");
+			row_.insertBefore(placeholder,row_.getElementsByClassName("cell_Temp")[i]);
+		}
+	}else if(row_.getElementsByClassName('cell-default')){
+		for (let i = 0; i < row_.getElementsByClassName("cell-default").length; i++){
+			placeholder.classList.add("placeholder");
+			row_.insertBefore(placeholder,row_.getElementsByClassName("cell-default")[i]);
+		}
+	}
+}*/
 
 function add_Title(event){
 	var html = event.clipboardData.getData('text/html');
@@ -161,26 +128,28 @@ function add_Title(event){
 	document.getElementById('ref').innerHTML = title;
 }
 
-
 function initialize(){
     document.addEventListener('drop', function(ev){
 		if(ev.target.parentElement.classList.contains('row')){
 			drop(ev);
 		}else if(ev.target.classList.contains('row_Temp_List')){
 			drop_toTemp(ev);
+		}else if(ev.target.parentElement.classList.contains('brickOriginal')){
+			drop_toTemp(ev);
 		}
 	});
     document.addEventListener('dragover', dragover_handler);
     document.addEventListener('dragleave', dragleave_handler);
 	document.getElementById('main_text').addEventListener('paste', add_Title);
-    // document.addEventListener('dragend', dragend);
 }
 
 window.onload = initialize;
 
 $(document).ready(function() {
     $('.conclusion_Entry').colorbox({
-		inline: true, width:"50%", height:"50%",
+		inline: true,
+		width:"50%",
+		height:"50%",
 		onLoad: function(){
 			$('#conclusionBox').show();
 		},
@@ -188,4 +157,55 @@ $(document).ready(function() {
 			$('#conclusionBox').hide();
 		}
 	});
+	set_Colorbox_celldefault('.cell-default');
 });
+
+function set_Colorbox_celldefault(targetElement){
+	$(targetElement).colorbox({
+		href:"#addBox",
+		inline: true,
+		width:"30%",
+		height:"50%",
+		closeButton: false,
+		onLoad: function(){
+			$('#addBox').show();
+		}, 
+		onCleanup: function(obj){
+			$('#addBox').hide();
+			var text = document.getElementById('main_text').value;
+			var ref = document.getElementById('ref').innerHTML;
+			var container = obj.el;
+			text = text.replace(/\n/g, '<br/>').replace(/ /g, '&nbsp;');
+			ref = ref.replace(/ /g, '&nbsp;');
+			if (text.length < 1){
+				return false;
+			} else {
+				var cell = document.createElement('div');
+				cell.classList.add('cell');
+				$(container).replaceWith(cell);
+				cell.innerHTML += (
+				//wrap the "brick" with a anchor tag, for linking colorbox
+				//id of the anchor was used by "drag()"
+				'<a id="anchor_brickOriginal' 
+				+ document.getElementsByClassName('brickOriginal').length 
+				+ '" href="#brickOriginal' 
+				+ document.getElementsByClassName('brickOriginal').length 
+				+  '">'
+				//then create the brick style`
+				+ '<div id="brickOriginal' 
+				+ document.getElementsByClassName('brickOriginal').length 
+				+ '" class="brickOriginal" draggable="true" ondragstart="drag(event);">'
+				//then pull in the main_text and reference
+            	+ '<div class="brick-content">' + text + '</div>'
+				+ '<p class="brick-ref">' + ref + '</p>'
+            	+ '</div>' 
+				+ '</a>');
+				//link the anchor tag to the colorbox effect
+				var newAnchor = cell.getElementsByTagName('a')[0];
+				$(newAnchor).colorbox({inline: true, width:"50%", height:"50%"});
+				document.getElementById('main_text').value = null;
+   				document.getElementById('ref').innerHTML = null;
+			}
+		}
+	});
+}

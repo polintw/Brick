@@ -53,6 +53,12 @@ section {
 	background-color: transparent;
 }
 
+.cell-default {
+	height: 100%;
+	flex-basis: 100%;
+	background-color: transparent;
+}
+
 .cell_Temp {
 	height: 100%;
 	flex-basis: 100%;
@@ -110,6 +116,16 @@ section {
 	font-size: 1 em;
 }
 
+.add-dialogbox {
+	width:500pxpx;
+    height: 200px;
+	display: none;
+}
+
+.input-new {
+	width: 80%;
+}
+
 .pasteHolder {
 	position: absolute;
 	left: -9999px;
@@ -124,6 +140,7 @@ section {
 	position: relative;
 	display: none;
 }
+
 
 #paste {
     padding: 1%;
