@@ -70,7 +70,6 @@ function drop_toTemp(ev){
 	 var brick = document.getElementById(ev.dataTransfer.getData("a_brick"));
 	 var source_cell = brick.parentElement;
 	 var source_row = source_cell.parentElement;
-	 var locationOn = ev.target;
 	 //check source, forbidden temp row to temp row
 	 if(source_cell.classList.contains('row_Temp_ListItem')){
 		 return false;
@@ -82,13 +81,8 @@ function drop_toTemp(ev){
 		//lock width and height
 		brick.getElementsByClassName('brickOriginal')[0].style.width = '280px';
 		brick.getElementsByClassName('brickOriginal')[0].style.height = '128px';
-		if(locationOn.classList.contains('row_Temp_List')){
-			locationOn.insertBefore(li, locationOn.childNodes[0]);
-			tempListItem_addListener(li.getElementsByClassName('brickOriginal')[0]);
-		}else if(locationOn.parentElement.classList.contains('brickOriginal')){
-			document.getElementsByClassName('row_Temp_List')[0].insertBefore(li, document.getElementsByClassName('row_Temp_List')[0].childNodes[0]);
-			tempListItem_addListener(li.getElementsByClassName('brickOriginal')[0]);
-	 	}
+		//add brick into the temp row
+		document.getElementsByClassName('row_Temp_List')[0].insertBefore(li, document.getElementsByClassName('row_Temp_List')[0].childNodes[0]);
 		//manage source row
 	 	if (3 < source_row.getElementsByClassName("cell").length + source_row.getElementsByClassName("cell-default").length){
 			var blank = document.createElement("div");
@@ -140,15 +134,13 @@ function initialize(){
 			drop(ev);
 		}else if(ev.target.classList.contains('row_Temp_List')){
 			drop_toTemp(ev);
+		}else if(ev.target.parentElement.classList.contains('brickOriginal')){
+			drop_toTemp(ev);
 		}
 	});
     document.addEventListener('dragover', dragover_handler);
     document.addEventListener('dragleave', dragleave_handler);
 	document.getElementById('main_text').addEventListener('paste', add_Title);
-}
-
-function tempListItem_addListener(listItem) {
-	listItem.addEventListener('drop', drop_toTemp);
 }
 
 window.onload = initialize;
