@@ -40,21 +40,33 @@ function drop(ev) {
 	}
 	// rearrange the original row
 	rearrange(row);
-	if (3 < source_row.getElementsByClassName("cell").length){
-		var blank = document.createElement("div");
-		if(brick.classList.contains("brickOriginal")){
-			source_cell.appendChild(blank);
-			blank.classList.add("brickOriginal-Blank");
-		}else if(brick.classList.contains("brickTopic")){
-			source_cell.appendChild(blank);
-			blank.classList.add("brickTopic-Blank");
-		}
-	}
+        /*var blank = document.createElement("div");
+    if(brick.classList.contains("brickOriginal")){
+        source_cell.appendChild(blank);
+        blank.classList.add("brickOriginal-Blank");
+        console.log(source_cell);
+    }else if(brick.classList.contains("brickTopic")){
+        source_cell.appendChild(blank);
+        blank.classList.add("brickTopic-Blank");
+        console.log(source_cell);
+    } else {console.log('failed');}*/
 	rearrange(source_row);
 	
 }
 
 function rearrange(row_){
+    while (3 < row_.getElementsByClassName("cell").length && 
+        row_.getElementsByClassName("cell").length > 
+        row_.getElementsByClassName("cboxElement").length){
+    var row_length = row_.getElementsByClassName("cell").length;
+    for (var i = row_length - 1; i >= 0; i--) {
+        var cell = row_.getElementsByClassName("cell")[i]
+         if (cell.getElementsByClassName("cboxElement").length == 0) {
+            row_.removeChild(cell);
+            break;
+         }
+     } 
+    }
 	while (row_.getElementsByClassName("placeholder")[0]){
 		row_.removeChild(row_.getElementsByClassName("placeholder")[0]);
 	}
@@ -68,14 +80,14 @@ function rearrange(row_){
 	row_.appendChild(placeholder);
 }
 
-/* function dragend(ev) {
-    var tds = document.getElementsByTagName('td');
+ function dragend(ev) {
+    var tds = document.getElementsByTagName('div');
     for(let i = 0; i < tds.length; i++){
         if (tds[i].classList.contains("dragover")){
             tds[i].classList.remove("dragover");
         }
     }
-} */
+} 
 
 function add_brickOriginal (){
     var text = document.getElementById('main_text').value
@@ -85,8 +97,10 @@ function add_brickOriginal (){
     var cells = document.getElementsByClassName('cell');
     for(let i = cells.length - 1; i >= 0; i--){
 		if (cells[i].getElementsByClassName('brickOriginal')[0]){
-            continue;
+			//means all cells are occupied
+          	continue;
 		}else if(cells[i].getElementsByClassName('brickTopic')[0]){
+			//means all cells are occupied
             continue;
 		}else{
 			cells[i].innerHTML += (
