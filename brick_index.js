@@ -5,15 +5,40 @@ function drag(ev) {
 
 function dragleave_handler(ev) {
     ev.preventDefault();
-	if (ev.target.classList.contains("dragover")){
+    if (ev.target.classList.contains("dragover")){
     ev.target.classList.remove("dragover");
 	}
+    if(ev.target.classList.contains('cell_Temp')){
+        var row = ev.target.parentElement;
+        row.removeChild(ev.target.previousSibling);
+        row.removeChild(ev.target);
+    }
 }
 
 function allowDrop(ev) {
     ev.preventDefault();
-    if (ev.target.classList.contains("placeholder")){
-        ev.target.classList.add("dragover");
+    var prev = ev.target.previousElementSibling;
+    var nex = ev.target.nextElementSibling;
+    if (ev.target.classList.contains("placeholder") &&(
+                ( prev && prev.lastElementChild&&
+                  nex &&  nex.lastElementChild
+                    ) ||
+                ( prev && prev.lastElementChild&&
+                    !nex
+                    ) ||
+                ( nex &&  nex.lastElementChild&&
+                    !prev
+                    ) 
+            )
+        ){
+        // ev.target.classList.add("dragover");
+        var row = ev.target.parentElement;
+        var newCell = document.createElement('div');
+        var newPlaceholder = document.createElement('div');
+        newCell.className = 'cell cell_Temp';
+        newPlaceholder.className = 'placeholder';
+        row.insertBefore(newCell, ev.target);
+        row.insertBefore(newPlaceholder, newCell);
     }
 	else if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brickOriginal')[0] === undefined && ev.target.getElementsByClassName('brickTopic')[0] === undefined){
         ev.target.classList.add("dragover");
@@ -31,6 +56,7 @@ function drop(ev) {
     if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brickOriginal')[0] === undefined && ev.target.getElementsByClassName('brickTopic')[0] === undefined){
         ev.target.appendChild(brick);
         ev.target.classList.remove("dragover");
+        ev.target.classList.remove('cell_Temp');
     }
 	else if (ev.target.classList.contains("placeholder")){
 		var cell = document.createElement("div");
