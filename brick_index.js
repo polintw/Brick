@@ -5,15 +5,40 @@ function drag(ev) {
 
 function dragleave_handler(ev) {
     ev.preventDefault();
-	if (ev.target.classList.contains("dragover")){
+    if (ev.target.classList.contains("dragover")){
     ev.target.classList.remove("dragover");
 	}
+    if(ev.target.classList.contains('cell_Temp')){
+        var row = ev.target.parentElement;
+        row.removeChild(ev.target.previousSibling);
+        row.removeChild(ev.target);
+    }
 }
 
 function allowDrop(ev) {
     ev.preventDefault();
-    if (ev.target.classList.contains("placeholder")){
-        ev.target.classList.add("dragover");
+    var prev = ev.target.previousElementSibling;
+    var nex = ev.target.nextElementSibling;
+    if (ev.target.classList.contains("placeholder") &&(
+                ( prev && prev.lastElementChild&&
+                  nex &&  nex.lastElementChild
+                    ) ||
+                ( prev && prev.lastElementChild&&
+                    !nex
+                    ) ||
+                ( nex &&  nex.lastElementChild&&
+                    !prev
+                    ) 
+            )
+        ){
+        // ev.target.classList.add("dragover");
+        var row = ev.target.parentElement;
+        var newCell = document.createElement('div');
+        var newPlaceholder = document.createElement('div');
+        newCell.className = 'cell cell_Temp';
+        newPlaceholder.className = 'placeholder';
+        row.insertBefore(newCell, ev.target);
+        row.insertBefore(newPlaceholder, newCell);
     }
 	else if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brickOriginal')[0] === undefined && ev.target.getElementsByClassName('brickTopic')[0] === undefined){
         ev.target.classList.add("dragover");
@@ -31,6 +56,7 @@ function drop(ev) {
     if (ev.target.classList.contains("cell") && ev.target.getElementsByClassName('brickOriginal')[0] === undefined && ev.target.getElementsByClassName('brickTopic')[0] === undefined){
         ev.target.appendChild(brick);
         ev.target.classList.remove("dragover");
+        ev.target.classList.remove('cell_Temp');
     }
 	else if (ev.target.classList.contains("placeholder")){
 		var cell = document.createElement("div");
@@ -40,21 +66,33 @@ function drop(ev) {
 	}
 	// rearrange the original row
 	rearrange(row);
-	if (3 < source_row.getElementsByClassName("cell").length){
-		var blank = document.createElement("div");
-		if(brick.classList.contains("brickOriginal")){
-			source_cell.appendChild(blank);
-			blank.classList.add("brickOriginal-Blank");
-		}else if(brick.classList.contains("brickTopic")){
-			source_cell.appendChild(blank);
-			blank.classList.add("brickTopic-Blank");
-		}
-	}
+        /*var blank = document.createElement("div");
+    if(brick.classList.contains("brickOriginal")){
+        source_cell.appendChild(blank);
+        blank.classList.add("brickOriginal-Blank");
+        console.log(source_cell);
+    }else if(brick.classList.contains("brickTopic")){
+        source_cell.appendChild(blank);
+        blank.classList.add("brickTopic-Blank");
+        console.log(source_cell);
+    } else {console.log('failed');}*/
 	rearrange(source_row);
 	
 }
 
 function rearrange(row_){
+    while (3 < row_.getElementsByClassName("cell").length && 
+        row_.getElementsByClassName("cell").length > 
+        row_.getElementsByClassName("cboxElement").length){
+    var row_length = row_.getElementsByClassName("cell").length;
+    for (var i = row_length - 1; i >= 0; i--) {
+        var cell = row_.getElementsByClassName("cell")[i]
+         if (cell.getElementsByClassName("cboxElement").length == 0) {
+            row_.removeChild(cell);
+            break;
+         }
+     } 
+    }
 	while (row_.getElementsByClassName("placeholder")[0]){
 		row_.removeChild(row_.getElementsByClassName("placeholder")[0]);
 	}
@@ -68,14 +106,14 @@ function rearrange(row_){
 	row_.appendChild(placeholder);
 }
 
-/* function dragend(ev) {
-    var tds = document.getElementsByTagName('td');
+ function dragend(ev) {
+    var tds = document.getElementsByTagName('div');
     for(let i = 0; i < tds.length; i++){
         if (tds[i].classList.contains("dragover")){
             tds[i].classList.remove("dragover");
         }
     }
-} */
+} 
 
 function add_brickOriginal (){
     var text = document.getElementById('main_text').value
@@ -85,8 +123,10 @@ function add_brickOriginal (){
     var cells = document.getElementsByClassName('cell');
     for(let i = cells.length - 1; i >= 0; i--){
 		if (cells[i].getElementsByClassName('brickOriginal')[0]){
-            continue;
+			//means all cells are occupied
+          	continue;
 		}else if(cells[i].getElementsByClassName('brickTopic')[0]){
+			//means all cells are occupied
             continue;
 		}else{
 			cells[i].innerHTML += (
